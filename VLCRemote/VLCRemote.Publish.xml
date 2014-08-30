@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\inetpub\wwwroot" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Global.asax" publishTime="08/29/2014 19:21:29" />
+    <file relUrl="bin/VLCRemote.pdb" publishTime="08/29/2014 22:02:43" />
+    <file relUrl="bin/VLCRemote.dll" publishTime="08/29/2014 22:02:43" />
+    <file relUrl="Web.config" publishTime="08/29/2014 19:29:08" />
+    <file relUrl="Default.aspx" publishTime="08/29/2014 22:06:41" />
+  </publishProfile>
+</publishData>

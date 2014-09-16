@@ -39,8 +39,7 @@ namespace SelfHost {
 		}
 
 		public static void SetDisplayMode (DisplayMode mode) {
-			var proc = new Process();
-			proc.StartInfo.FileName = "DisplaySwitch.exe";
+			var proc = new Process {StartInfo = {FileName = "DisplaySwitch.exe"}};
 			switch (mode) {
 				case DisplayMode.External:
 					proc.StartInfo.Arguments = "/external";

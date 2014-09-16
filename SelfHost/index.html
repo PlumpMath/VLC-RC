@@ -2,16 +2,31 @@
 <head>
 	<title>TV Remote</title>
 	<meta name="viewport" content="width=320, initial-scale=1"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="mobile-web-app-capable" content="yes">
 	<style>
+		@media (orientation: landscape) {
+			body {
+				-webkit-transform: rotate(-90deg);
+				-moz-transform: rotate(-90deg);
+				-o-transform: rotate(-90deg);
+				-ms-transform: rotate(-90deg);
+				transform: rotate(-90deg);
+				-webkit-transform-origin: 160px 160px;
+			}
+		}
 		.btn {
 			background-color: #3bb3e0;
 			font-family: sans-serif;
 			font-size: 16px;
 			font-weight: bolder;
 			text-decoration: none;
+			text-align: center;
 			color: #fff;
 			position: relative;
-			padding: 10px 20px;
+			padding: 10px 0 10px 0;
+			margin: 8px 0 0 0;
 			background-image: linear-gradient(bottom, rgb(44,160,202) 0%, rgb(62,184,229) 100%);
 			background-image: -o-linear-gradient(bottom, rgb(44,160,202) 0%, rgb(62,184,229) 100%);
 			background-image: -moz-linear-gradient(bottom, rgb(44,160,202) 0%, rgb(62,184,229) 100%);
@@ -27,14 +42,18 @@
 			-o-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #999;
 			box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #999;
 			display: inline-block;
-		}		.square {
+		}
+		.square {
 			width: 50px;
-			height: 50px;
+			height: 30px; /*total 50px width padding */
+		}
+		.space {
+			width: 50px;
+			height: 30px;
 			display: inline-block;
-		}		.space {
-			width: 90px;
-			height: 90px;
-			display: inline-block;
+		}
+		.gap {
+			margin-left: 4px;
 		}
 		.btn:active {
 			top: 3px;
@@ -51,25 +70,29 @@
 		}
 	</style>
 </head>
-<body style="width: 320">
-	<a class="btn" onclick="send('d-drive')" style="float: left;width:120px">Load DVD</a>
-	<a class="btn" onclick="send('LoadFile')" text="Load file" style="float: right;width:120px">Load File</a>
+<body style="width:320px;">
+	<a class="btn" onclick="send('d-drive')" style="float: left;width:45%">Load DVD</a>
+	<a class="btn" onclick="send('LoadFile')"  style="float: right;width:45%">Load File</a>
 	<div style="clear: both; height: 10px"> &nbsp;</div>
-	<a class="btn" onclick="send('playpause')" text="Play/Pause" style="width:320px;height:60px">Play / Pause</a>
+	<a class="btn" onclick="send('playpause')"  style="width:100%;height:60px">Play / Pause</a>
 	<div style="clear: both; height: 10px"> &nbsp;</div>
 	<a class="btn" onclick="send('go-menu')" style="float: left; width:100px">DVD Menu</a>
-	<a class="btn" onclick="send('ch-next')" text="Ch >" style="float: right;width:50px">Ch ></a>
-	<a class="btn" onclick="send('ch-prev')" text="Ch <" style="float: right;width:50px">Ch <</a>
-	<div style="clear: both; height: 10px"> &nbsp;</div>
+	<a class="btn gap" onclick="send('ch-next')"  style="float: right;width:50px">Ch ></a>
+	<a class="btn" onclick="send('ch-prev')"  style="float: right;width:50px">Ch <</a>
+	<div style="clear: both; height: 40px"> &nbsp;</div>
 	<span class="space"></span>
-	<a class="btn square" onclick="send('up')" text="/\">/\</a>
+	<a class="btn square" onclick="send('up')" >/\</a>
 	<br />
-	<a class="btn square" onclick="send('left')" text="<">&lt;</a>
-	<a class="btn square" onclick="send('select')" text="Select">*</a>
-	<a class="btn square" onclick="send('right')" text=">">&gt;</a>
+	<a class="btn square" onclick="send('left')" >&lt;</a>
+	<a class="btn square" onclick="send('select')" >OK</a>
+	<a class="btn square" onclick="send('right')" >&gt;</a>
 	<br />
 	<span class="space"></span>
-	<a class="btn square" onclick="send('down')" text="\/">\/</a>
+	<a class="btn square" onclick="send('down')" >\/</a>
+	<br />
+	<div style="clear: both; height:45px"> &nbsp;</div>
+	<a class="btn gap" onclick="send('disp-external')" style="float:right;width:25%;">TV</a>
+	<a class="btn" onclick="send('disp-internal')" style="float:right;width:25%">Monitor</a>
 
 	<script type="text/ecmascript">
 		function send(msg) {
@@ -77,6 +100,8 @@
 			orq.open("GET", "/control?do=" + msg, true);
 			orq.send();
 		}
+		window.addEventListener("touchmove", function(event) { event.preventDefault(); }, false);
+		document.documentElement.requestFullscreen();
 	</script>
 
 </body>

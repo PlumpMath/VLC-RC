@@ -8,7 +8,7 @@ namespace SelfHost {
 		static void Main (string[] args) {
 			var listen = new[]{"http://iain-pc:80/", "http://localhost:80/"};
 			using (new WebServer(SendResponse, listen)) {
-				Console.WriteLine("listening on " + listen);
+				Console.WriteLine("listening on " + string.Join(", ", listen));
 				Console.WriteLine("Press any key to exit");
 				Console.ReadKey();
 			}

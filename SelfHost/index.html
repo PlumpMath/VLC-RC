@@ -72,7 +72,7 @@
 </head>
 <body style="width:320px;">
 	<a class="btn" onclick="send('d-drive')" style="float: left;width:45%">Load DVD</a>
-	<a class="btn" onclick="send('LoadFile')"  style="float: right;width:45%">Load File</a>
+	<a class="btn" href="/files" style="float: right;width:45%">Load File</a>
 	<div style="clear: both; height: 10px"> &nbsp;</div>
 	<a class="btn" onclick="send('playpause')"  style="width:100%;height:60px">Play / Pause</a>
 	<div style="clear: both; height: 10px"> &nbsp;</div>
@@ -93,6 +93,7 @@
 	<div style="clear: both; height:45px"> &nbsp;</div>
 	<a class="btn gap" onclick="send('disp-external')" style="float:right;width:25%;">TV</a>
 	<a class="btn" onclick="send('disp-internal')" style="float:right;width:25%">Monitor</a>
+	<a class="btn" onclick="send('eject-d')" style="float:left;width:30%">Eject DVD</a>
 
 	<script type="text/ecmascript">
 		function send(msg) {

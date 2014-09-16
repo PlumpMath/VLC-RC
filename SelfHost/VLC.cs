@@ -1,6 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+			using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 
 namespace SelfHost {
 	public static class VLC {
@@ -13,12 +17,13 @@ namespace SelfHost {
 		static void SendMessage (string commandString) {
 			using (var client = new TcpClient()) {
 				client.Connect(new IPEndPoint(IPAddress.Loopback, 8765));
-				var data = System.Text.Encoding.ASCII.GetBytes(commandString + "\r\n");
+				var data = Encoding.ASCII.GetBytes(commandString + "\r\n");
 
 				using (var stream = client.GetStream()) {
 					stream.Write(data, 0, data.Length);
 					stream.Flush();
 				}
+				
 				client.Close();
 			}
 		}
@@ -38,7 +43,7 @@ namespace SelfHost {
 			SendMessage("f on"); // start in fullscreen
 		}
 
-		public static void SetDisplayMode (DisplayMode mode) {
+		public static string SetDisplayMode (DisplayMode mode) {
 			var proc = new Process {StartInfo = {FileName = "DisplaySwitch.exe"}};
 			switch (mode) {
 				case DisplayMode.External:
@@ -55,8 +60,25 @@ namespace SelfHost {
 					break;
 			}
 			proc.Start();
+			return null;
 		}
 
+		public static void KillAll() {
+			var all = Process.GetProcessesByName("vlc");
+			foreach (var process in all) {
+				process.CloseMainWindow();
+				if (!process.WaitForExit(500)) process.Kill();
+			}
+			Thread.Sleep(500);
+		}
+
+		[DllImport("winmm.dll")]
+		static extern Int32 mciSendString (String command, StringBuilder buffer, Int32 bufferSize, IntPtr hwndCallback);
+
+		public static string Eject () {
+			mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
+			return null;
+		}
 	}
 
 	public enum DisplayMode {

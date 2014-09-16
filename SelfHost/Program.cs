@@ -2,26 +2,39 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 namespace SelfHost {
 	class Program {
-		static void Main (string[] args) {
-			var listen = new[]{"http://iain-pc:80/", "http://localhost:80/"};
-			using (new WebServer(SendResponse, listen)) {
-				Console.WriteLine("listening on " + string.Join(", ", listen));
-				Console.WriteLine("Press any key to exit");
-				Console.ReadKey();
+		static void Main () {
+			try {
+				var listen = new[] { "http://iain-pc:80/", "http://localhost:80/" };
+				using (new WebServer(SendResponse, listen)) {
+					Console.WriteLine("listening on " + string.Join(", ", listen));
+					//Console.WriteLine("Press any key to exit");
+					//Console.ReadKey();
+					for (; ; ) {
+						Thread.Sleep(250);
+					}
+				}
+			} catch (Exception ex) {
+				Console.WriteLine("Web host failed: " + ex.Message);
 			}
 		}
 		public static string SendResponse (HttpListenerRequest request, HttpListenerResponse rawResponse) {
-			var repoPath = request.Url.AbsolutePath;
+			Console.WriteLine(request.Url.PathAndQuery);
+			var url = request.Url.AbsolutePath;
 			var settings = request.QueryString;
-			if (repoPath == "/favicon.ico") {
+			if (url == "/favicon.ico") {
 				return WriteIcon(rawResponse);
 			}
-			if (repoPath == "/control") {
+			if (url == "/control") {
 				rawResponse.AddHeader("Cache-Control", "no-cache");
 				return Actions(settings);
+			}
+			if (url == "/files") {
+				rawResponse.AddHeader("Content-Type", "text/html");
+				return "FILES";
 			}
 
 			// Otherwise, show the controller HTML
@@ -35,8 +48,15 @@ namespace SelfHost {
 		static string Actions(NameValueCollection settings) {
 			switch (settings["do"]) {
 				case "playpause": return VLC.Control(RcStrings.PauseToggle);
-				case "d-drive": return VLC.Control(RcStrings.Load_D_Drive);
-				case "load-file": return "not-implemented";
+				case "d-drive": {
+					VLC.KillAll(); // reset vlc to ensure good starting params
+					return VLC.Control(RcStrings.Load_D_Drive); 
+				}
+				case "eject-d": {
+					VLC.KillAll(); // reset vlc to ensure good starting params
+					CdBayControl.EjectMedia('D');
+					return null;
+					}
 				case "go-menu":return VLC.Control(RcStrings.GoMenu);
 				case "ch-next":return VLC.Control(RcStrings.NextChapter);
 				case "ch-prev":return VLC.Control(RcStrings.PrevChapter);
@@ -45,6 +65,8 @@ namespace SelfHost {
 				case "left": return VLC.Control(RcStrings.NavLeft);
 				case "right": return VLC.Control(RcStrings.NavRight);
 				case "select": return VLC.Control(RcStrings.NavSelect);
+				case "disp-external": return VLC.SetDisplayMode(DisplayMode.External);
+				case "disp-internal": return VLC.SetDisplayMode(DisplayMode.Internal);
 				default: return "UNKNOWN";
 			}
 		}

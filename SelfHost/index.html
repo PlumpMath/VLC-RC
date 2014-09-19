@@ -43,6 +43,9 @@
 			box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #999;
 			display: inline-block;
 		}
+		.small {
+			font-size:10px;
+		}
 		.square {
 			width: 50px;
 			height: 30px; /*total 50px width padding */
@@ -86,14 +89,16 @@
 	<a class="btn square" onclick="send('left')" >&lt;</a>
 	<a class="btn square" onclick="send('select')" >OK</a>
 	<a class="btn square" onclick="send('right')" >&gt;</a>
+	<a class="btn small" onclick="send('sleep-system')" style="float:right;width:15%">Sleep</a>
 	<br />
 	<span class="space"></span>
 	<a class="btn square" onclick="send('down')" >\/</a>
 	<br />
 	<div style="clear: both; height:45px"> &nbsp;</div>
 	<a class="btn gap" onclick="send('disp-external')" style="float:right;width:25%;">TV</a>
-	<a class="btn" onclick="send('disp-internal')" style="float:right;width:25%">Monitor</a>
-	<a class="btn" onclick="send('eject-d')" style="float:left;width:30%">Eject DVD</a>
+	<a class="btn" onclick="send('disp-internal')" style="float:right;width:20%">PC</a>
+
+	<a class="btn" onclick="send('eject-d')" style="float:left;width:30%">Eject</a>
 
 	<script type="text/ecmascript">
 		function send(msg) {

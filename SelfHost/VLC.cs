@@ -71,14 +71,6 @@ namespace SelfHost {
 			}
 			Thread.Sleep(500);
 		}
-
-		[DllImport("winmm.dll")]
-		static extern Int32 mciSendString (String command, StringBuilder buffer, Int32 bufferSize, IntPtr hwndCallback);
-
-		public static string Eject () {
-			mciSendString("set CDAudio door open", null, 0, IntPtr.Zero);
-			return null;
-		}
 	}
 
 	public enum DisplayMode {

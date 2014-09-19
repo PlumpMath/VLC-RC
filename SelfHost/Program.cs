@@ -7,18 +7,20 @@ using System.Threading;
 namespace SelfHost {
 	class Program {
 		static void Main () {
-			try {
-				var listen = new[] { "http://iain-pc:80/", "http://localhost:80/" };
-				using (new WebServer(SendResponse, listen)) {
-					Console.WriteLine("listening on " + string.Join(", ", listen));
-					//Console.WriteLine("Press any key to exit");
-					//Console.ReadKey();
-					for (; ; ) {
-						Thread.Sleep(250);
+			for (; ; ) {
+				try {
+					var listen = new[] { "http://iain-pc:80/", "http://localhost:80/" };
+					using (new WebServer(SendResponse, listen)) {
+						Console.WriteLine("listening on " + string.Join(", ", listen));
+						for (; ; ) {
+							Thread.Sleep(250);
+						}
 					}
+				} catch (Exception ex) {
+					Console.WriteLine("Web host failed: " + ex.Message);
+					Thread.Sleep(1000);
+					Console.WriteLine("Restarting");
 				}
-			} catch (Exception ex) {
-				Console.WriteLine("Web host failed: " + ex.Message);
 			}
 		}
 		public static string SendResponse (HttpListenerRequest request, HttpListenerResponse rawResponse) {
@@ -67,6 +69,7 @@ namespace SelfHost {
 				case "select": return VLC.Control(RcStrings.NavSelect);
 				case "disp-external": return VLC.SetDisplayMode(DisplayMode.External);
 				case "disp-internal": return VLC.SetDisplayMode(DisplayMode.Internal);
+				case "sleep-system": return PcSleep.Sleep();
 				default: return "UNKNOWN";
 			}
 		}

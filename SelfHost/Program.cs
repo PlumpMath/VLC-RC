@@ -52,10 +52,11 @@ namespace SelfHost {
 				case "playpause": return VLC.Control(RcStrings.PauseToggle);
 				case "d-drive": {
 					VLC.KillAll(); // reset vlc to ensure good starting params
-					return VLC.Control(RcStrings.Load_D_Drive); 
+					return VLC.Control(RcStrings.Load_DVD_Drive);
 				}
 				case "eject-d": {
 					VLC.KillAll(); // reset vlc to ensure good starting params
+					Thread.Sleep(1000); // VLC 2 seems to hang on to it for a while
 					CdBayControl.EjectMedia('D');
 					return null;
 					}

@@ -40,7 +40,11 @@ namespace SelfHost {
 			});
 			proc.WaitForInputIdle();
 
-			SendMessage("f on"); // start in fullscreen
+			//SendMessage("f on"); // start in fullscreen -- triggers an error in vlc 2.1.5
+			// work around -- will go into fullscreen once video starts
+			SendMessage(RcStrings.ExitFullscreen);
+			Thread.Sleep(100);
+			SendMessage(RcStrings.ToggleFullscreen);
 		}
 
 		public static string SetDisplayMode (DisplayMode mode) {

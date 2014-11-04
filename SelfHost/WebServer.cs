@@ -63,8 +63,12 @@ namespace SelfHost
             }
             finally
             {
-                ctx.Response.OutputStream.Flush();
-                ctx.Response.OutputStream.Dispose();
+				try {
+					ctx.Response.OutputStream.Flush();
+					ctx.Response.OutputStream.Dispose();
+				} catch (Exception exfin) {
+					Console.WriteLine("Could not dispose of output -- " + exfin.Message);
+				}
             }
         }
 
